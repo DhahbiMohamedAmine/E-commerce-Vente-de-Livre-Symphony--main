@@ -3,15 +3,19 @@
 namespace App\Controller;
 
 use App\Entity\Livres;
+use App\Form\LivreType;
 use App\Repository\LivresRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+#[IsGranted('ROLE_ADMIN')]
 class LivresController extends AbstractController
 {
     #[Route('/admin/livres', name: 'app_admin_livres')]
+
     public function index(LivresRepository $rep): Response
     {
         $livres = $rep->findAll();
@@ -27,21 +31,23 @@ class LivresController extends AbstractController
         ]);
     }
     #[Route('/admin/livres/create', name: 'app_admin_livres_create')]
-    public function create(EntityManagerInterface $em): Response
+    public function create(EntityManagerInterface $em,Request $request): Response
     {
+        
         $livre=new Livres();
-        $livre->setAuteur('Auteur4')
-              ->setDateEdition(new \DateTime('13-03-2022'))
-              ->setEditeur('Eni')
-              ->setImage('https://picsum.photos/536/354')
-              ->setISBN('122.3333.3222.1113')
-              ->setPrix(200)
-              ->setResume('Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure commodi itaque aspernatur fugit neque porro ipsa error esse consequatur? Omnis sit repellat natus, odit facilis quia esse consectetur ipsa quasi!')
-              ->setSlug('titre-4')
-              ->setTitre('titre4');
-              $em->persist($livre);
-              $em->flush();
-              dd($livre);
+        #creation d'un objet formulaire
+        $form=$this->createForm(LivreType::class,$livre);
+        #recuperation et traitement des données
+        $form->handleRequest($request);
+        if($form->isSubmitted()){
+            $em->persist($livre);
+            $em->flush();
+            return $this->redirectToRoute('app_admin_livres');
+        }
+        #affichage du formulaire
+        return $this->render('livres/add.html.twig', [
+            'f' => $form,
+        ]);
     }
     #[Route('/admin/livres/delete/{id}', name: 'app_admin_livres_delete')]
     public function delete(EntityManagerInterface $em,Livres $livre):Response
@@ -52,12 +58,23 @@ class LivresController extends AbstractController
         dd($livre);
     }
     #[Route('/admin/livres/update/{id}', name: 'app_admin_livres_update')]
-    public function update(EntityManagerInterface $em ,Livres $livre): Response
-    {
-        $livre->setPrix(1000);
-        $em->persist($livre);
-        $em->flush();
-        dd($livre);
-    }
+    public function update(Livres $livre,EntityManagerInterface $em,Request $request): Response
+        {
+            
+            #creation d'un objet formulaire
+            $form=$this->createForm(LivreType::class,$livre);
+            #recuperation et traitement des données
+            $form->handleRequest($request);
+            if($form->isSubmitted()){
+                $em->persist($livre);
+                $em->flush();
+                return $this->redirectToRoute('app_admin_livres');
+            }
+            #affichage du formulaire
+            return $this->render('livres/update.html.twig', [
+                'f' => $form,
+            ]);
+        }
+    
 }
 

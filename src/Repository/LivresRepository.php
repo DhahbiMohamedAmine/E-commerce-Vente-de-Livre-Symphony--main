@@ -21,28 +21,21 @@ class LivresRepository extends ServiceEntityRepository
         parent::__construct($registry, Livres::class);
     }
 
-//    /**
-//     * @return Livres[] Returns an array of Livres objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('l')
-//            ->andWhere('l.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('l.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return Livres[] Returns an array of Livres objects
+     */
+   // LivresRepository.php
 
-//    public function findOneBySomeField($value): ?Livres
-//    {
-//        return $this->createQueryBuilder('l')
-//            ->andWhere('l.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+public function rechercher($test): array
+{   return $this->createQueryBuilder('l')
+        ->Where('l.titre = :titre')
+        ->setParameter('titre', $test->getTitre())
+        ->andWhere('l.auteur = :auteur')
+        ->setParameter('auteur', $test->getAuteur())
+        ->andWhere('l.Categorie = :categorie')
+        ->setParameter('categorie', $test->getCategorie()->getId())
+        ->getQuery()
+        ->getResult();
 }
+}
+
