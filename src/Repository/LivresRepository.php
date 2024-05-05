@@ -24,18 +24,25 @@ class LivresRepository extends ServiceEntityRepository
     /**
      * @return Livres[] Returns an array of Livres objects
      */
-   // LivresRepository.php
+    public function search($searchData): array
+    {
+        $qb = $this->createQueryBuilder('l');
 
-public function rechercher($test): array
-{   return $this->createQueryBuilder('l')
-        ->Where('l.titre = :titre')
-        ->setParameter('titre', $test->getTitre())
-        ->andWhere('l.auteur = :auteur')
-        ->setParameter('auteur', $test->getAuteur())
-        ->andWhere('l.Categorie = :categorie')
-        ->setParameter('categorie', $test->getCategorie()->getId())
-        ->getQuery()
-        ->getResult();
-}
-}
+        if ($searchData->getTitre()) {
+            $qb->andWhere('l.titre = :titre');
+            $qb->setParameter('titre', $searchData->getTitre());
+        }
 
+        if ($searchData->getAuteur()) {
+            $qb->andWhere('l.auteur = :auteur');
+            $qb->setParameter('auteur', $searchData->getAuteur());
+        }
+
+        if ($searchData->getCategorie()) {
+            $qb->andWhere('l.Categorie = :categorie');
+            $qb->setParameter('categorie', $searchData->getCategorie()->getId());
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+}

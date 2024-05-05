@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 class CategorieController extends AbstractController
 {
     #[Route('/admin/categorie', name: 'admin_categorie')]
@@ -21,6 +22,7 @@ class CategorieController extends AbstractController
             'categories' => $categories,
         ]);
     }
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/categorie/create', name: 'admin_categorie_create')]
     public function create(EntityManagerInterface $em,Request $request): Response
     {
@@ -38,7 +40,7 @@ class CategorieController extends AbstractController
         return $this->render('categorie/create.html.twig', [
             'f' => $form,
         ]);
-    }
+    }#[IsGranted('ROLE_ADMIN')]
         #[Route('/admin/categorie/update/{id}', name: 'admin_categorie_update')]
         public function update(Categorie $categorie,EntityManagerInterface $em,Request $request): Response
         {
@@ -55,7 +57,7 @@ class CategorieController extends AbstractController
             return $this->render('categorie/update.html.twig', [
                 'f' => $form,
             ]);
-        }
+        }#[IsGranted('ROLE_ADMIN')]
         #[Route('/admin/categorie/delete/{id}', name: 'admin_categorie_delete')]
         public function delete(Categorie $categorie,EntityManagerInterface $em): Response
         {
