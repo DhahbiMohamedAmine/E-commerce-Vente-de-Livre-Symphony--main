@@ -1,17 +1,30 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Hello HomeController!{% endblock %}
-
 {% block body %}
-        <h1>bienvenue sur le site de vente de livre Symbook</h1>
-        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aspernatur, exercitationem odit. Nihil sapiente, eaque dolores dolor expedita optio distinctio doloribus, facere vitae quos eum maxime perferendis pariatur repudiandae consectetur tenetur!
-        Odio porro, veritatis ullam qui, quibusdam mollitia modi neque similique molestias omnis dolor! Unde quod numquam vel officia totam aliquam eveniet saepe nulla quo, similique cum libero iste aperiam aspernatur.
-        Consectetur consequuntur, necessitatibus molestiae totam provident alias! Consequatur sit debitis vel recusandae quo sunt quasi! Veritatis voluptates quia sit saepe officiis at recusandae cumque aperiam! Iure maxime quidem voluptatem nihil.
-        Ex, sequi. Adipisci veritatis ducimus inventore nemo incidunt repellendus aspernatur nostrum! Mollitia nesciunt deserunt voluptas debitis, facilis atque eius. Ipsa voluptate eius nulla magni quis quibusdam id repellendus laborum tempora?
-        Voluptatem totam quidem in asperiores? Eaque dolorum excepturi autem dolorem dolor eum tenetur iste sed libero, error quisquam ullam optio fugiat, laboriosam consequatur. Odit iusto saepe deleniti autem obcaecati corporis.
-        Architecto at modi adipisci accusamus fugiat, magnam dicta harum quibusdam et minus consectetur ipsa qui esse delectus quidem similique earum quo corrupti porro odit molestias quasi iusto molestiae mollitia! Magni.
-        Aliquam consectetur aliquid sapiente nesciunt recusandae. Natus doloribus autem minus libero quidem nobis consectetur vel, perspiciatis, vitae eos veritatis dolorum quis, assumenda enim vero quam. Pariatur dolor eligendi perferendis expedita!
-        Itaque quos beatae et possimus, fuga nobis nihil incidunt eveniet maiores aliquid eaque corporis expedita quod? Adipisci, at veniam fugiat nostrum aliquam quia facilis? Saepe repellat voluptatibus odit obcaecati sunt.
-        Esse dolorum architecto beatae, cumque quo commodi ducimus voluptates inventore voluptatum nobis officiis tenetur. Beatae animi libero odit tenetur maiores, harum impedit distinctio optio cumque, et, itaque consequatur molestias non?
-        Qui repellat vero reprehenderit voluptatibus illum fugit modi blanditiis placeat itaque quam exercitationem quos in, aut iusto perspiciatis distinctio ab dicta praesentium. Nihil, quisquam aliquam modi impedit ut voluptate totam?</p>
+        
+  <h1>Liste des Livres</h1>
+    
+ <div class="container" >
+        <div class="row">
+            {% for livre in livres %}
+                <div class="col-md-4">
+                    <div class="card mb-4 shadow-sm">
+                        <img class="card-img-top" src="{{ livre.image }}" alt="{{ livre.titre }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ livre.titre }}</h5>
+                            <p class="card-text">{{ livre.resume }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a  class="btn btn-sm btn-outline-secondary m-1" href="{{ path('app_admin_livres_show', {'id': livre.id}) }}">Voir</a>
+                                    <a  class="btn btn-sm btn-primary m-1" href="{{ path('panier_add', {'id': livre.id}) }}">Ajouter au panier</a>
+                                </div>
+                                <small class="text-muted">{{ livre.prix }}DT</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

@@ -4,6 +4,8 @@
 
 {% block body %}
 <h1>Liste des Livres</h1>
+<td><a href="{{ path('app_admin_livres_create')}}" class="btn btn-primary btn-sm">ajouter</a></td>
+<td><a href="{{ path('app_rechercher') }}" class="btn btn-success btn-sm">chercher</a></td>
 <table class="table">
     <tr>
         <th>Titre</th>
@@ -13,7 +15,7 @@
         <th>Date Edition</th>
         <th>Prix</th>
         <th>catégorie</th>
-        <th colspan="3">Action</th>
+        <th colspan="4">Action</th>
     </tr>
     {% for livre in livres %}
         <tr>
@@ -27,9 +29,9 @@
             <td><a href="{{ path('app_admin_livres_show', {'id': livre.id}) }}" class="btn btn-primary btn-sm">Voir plus ....</a></td>
             <td><a href="{{ path('app_admin_livres_delete', {'id': livre.id}) }}" class="btn btn-danger btn-sm">Supprimer</a></td>
             <td><a href="{{ path('app_admin_livres_update', {'id': livre.id}) }}" class="btn btn-success btn-sm">Editer</a></td>
+            <td><a href="{{ path('panier_add', {'id': livre.id}) }}" class="btn btn-info btn-sm">Ajouter</a></td>
         </tr>
     {% endfor %}
 </table>
-<td><a href="{{ path('app_admin_livres_create')}}" class="btn btn-primary btn-sm">ajouter</a></td>
-<td><a href="{{ path('app_rechercher') }}" class="btn btn-success btn-sm">chercher</a></td>
+
 {% endblock %}

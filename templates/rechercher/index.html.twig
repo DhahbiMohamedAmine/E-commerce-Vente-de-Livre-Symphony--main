@@ -35,7 +35,7 @@
             <td>{{ livre.prix }}</td>
             <td>{{ livre.categorie.libelle }}</td>
             <td><a href="{{ path('app_admin_livres_show', {'id': livre.id}) }}" class="btn btn-primary btn-sm">voir détail</a></td>
-            <td><a href="" class="btn btn-success btn-sm">ajouter au panier</a></td>
+            <td><a href="{{ path('panier_add', {'id': livre.id}) }}" class="btn btn-success btn-sm">ajouter au panier</a></td>
         </tr>
     {% endfor %}
 </table>

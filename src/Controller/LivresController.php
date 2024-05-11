@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-#[IsGranted('ROLE_ADMIN')]
+
 class LivresController extends AbstractController
 {
     #[Route('/admin/livres', name: 'app_admin_livres')]
@@ -30,6 +30,7 @@ class LivresController extends AbstractController
             'livre' => $livre,
         ]);
     }
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/livres/create', name: 'app_admin_livres_create')]
     public function create(EntityManagerInterface $em,Request $request): Response
     {
@@ -49,6 +50,7 @@ class LivresController extends AbstractController
             'f' => $form,
         ]);
     }
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/livres/delete/{id}', name: 'app_admin_livres_delete')]
     public function delete(EntityManagerInterface $em,Livres $livre):Response
     {
@@ -57,6 +59,7 @@ class LivresController extends AbstractController
         $em->flush();
         dd($livre);
     }
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/livres/update/{id}', name: 'app_admin_livres_update')]
     public function update(Livres $livre,EntityManagerInterface $em,Request $request): Response
         {
