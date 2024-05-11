@@ -13,18 +13,22 @@
     </tr>
     {% for user in users %}
         <tr>
-            <td>{{user.email}}</td>
-            <td>{% for role in user.roles %}
-            {{ role }}
-            {% endfor %}</td>
-
-            <td>{{user.isVerified}}</td>
+            <td>{{ user.email }}</td>
+            <td>
+                {% for role in user.roles %}
+                    {{ role }}
+                {% endfor %}
+            </td>
+            <td>{{ user.isVerified }}</td>
             <td><a href="{{ path('app_user_show', {'id': user.id}) }}" class="btn btn-primary btn-sm">Voir plus ....</a></td>
-            <td><a href="{{ path('app_user_delete', {'id': user.id}) }}" class="btn btn-danger btn-sm">Supprimer</a></td>
+            <td>
+                <form action="{{ path('app_user_delete', {'id': user.id}) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur?');">
+                    <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                </form>
+            </td>
             <td><a href="{{ path('app_user_update', {'id': user.id}) }}" class="btn btn-success btn-sm">Editer</a></td>
         </tr>
     {% endfor %}
 </table>
-    <a href="{{ path('admin_categorie_create') }}" class="btn btn-primary btn-sm">ajouter</a>
    
 {% endblock %}
