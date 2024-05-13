@@ -27,7 +27,7 @@ class ChercherType extends AbstractType
 
             ->add('categorie', EntityType::class, [
                 'class' => Categorie::class,
-'choice_label' => 'libelle',
+                'choice_label' => 'libelle',
                 'required' => false, // Allow the category field to be empty
                 'placeholder' => 'Choisir une catégorie',
             ]);

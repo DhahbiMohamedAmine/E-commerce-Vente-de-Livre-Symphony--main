@@ -4,15 +4,12 @@
 
 {% block body %}
     <h1>Rechercher un Livre</h1>
-
     {{ form_start(chercher) }}
     {{ form_row(chercher.titre) }}
     {{ form_row(chercher.auteur) }}
     {{ form_row(chercher.categorie) }}
     <button type="submit">Rechercher</button>
     {{ form_end(chercher) }}
-
-
     <h1>Liste des Livres</h1>
 <table class="table">
     <tr>

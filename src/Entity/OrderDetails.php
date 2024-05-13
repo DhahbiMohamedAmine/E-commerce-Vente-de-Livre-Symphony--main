@@ -20,7 +20,7 @@ class OrderDetails
     private $order;
 
     #[ORM\Id]
-    #[ORM\ManyToOne(targetEntity: livres::class, inversedBy: 'ordersDetails')]
+    #[ORM\ManyToOne(targetEntity: Livres::class, inversedBy: 'ordersDetails')]
     #[ORM\JoinColumn(nullable: false)]
     private $livres;
 

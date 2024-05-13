@@ -3,28 +3,37 @@
 {% block title %}Hello HomeController!{% endblock %}
 {% block body %}
         
-  <h1>Liste des Livres</h1>
+<h1>Liste des Livres</h1>
     
- <div class="container" >
-        <div class="row">
-            {% for livre in livres %}
-                <div class="col-md-4">
-                    <div class="card mb-4 shadow-sm">
-                        <img class="card-img-top" src="{{ livre.image }}" alt="{{ livre.titre }}">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ livre.titre }}</h5>
-                            <p class="card-text">{{ livre.resume }}</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <a  class="btn btn-sm btn-outline-secondary m-1" href="{{ path('app_admin_livres_show', {'id': livre.id}) }}">Voir</a>
-                                    <a  class="btn btn-sm btn-primary m-1" href="{{ path('panier_add', {'id': livre.id}) }}">Ajouter au panier</a>
-                                </div>
-                                <small class="text-muted">{{ livre.prix }}DT</small>
-                            </div>
+<style>
+    .custom-img-size {
+        width: 100%; /* Pour que l'image occupe toute la largeur de son conteneur */
+        height: 400px; /* Hauteur fixe pour toutes les images */
+        object-fit: cover; /* Pour conserver le ratio d'aspect et éviter la distorsion */
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        {% for livre in livres %}
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <img class="card-img-top custom-img-size" src="{{ livre.image }}" alt="{{ livre.titre }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ livre.titre }}</h5>
+                    <p class="card-text">{{ livre.resume }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <a class="btn btn-sm btn-outline-secondary m-1" href="{{ path('app_admin_livres_show', {'id': livre.id}) }}">Voir</a>
+                            <a class="btn btn-sm btn-primary m-1" href="{{ path('panier_add', {'id': livre.id}) }}">Ajouter au panier</a>
                         </div>
+                        <small class="text-muted">{{ livre.prix }}DT</small>
                     </div>
                 </div>
-            {% endfor %}
+            </div>
         </div>
+        {% endfor %}
     </div>
+</div>
+
 {% endblock %}

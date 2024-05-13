@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
@@ -70,6 +71,10 @@ class Order
 
         return $this;
     }
+    public function getOrderDetails(): Collection
+    {
+        return $this->orderDetails;
+    }
     public function addOrdersDetail(OrderDetails $ordersDetail): self
     {
         if (!$this->orderDetails->contains($ordersDetail)) {
@@ -79,4 +84,5 @@ class Order
 
         return $this;
     }
+    
 }
