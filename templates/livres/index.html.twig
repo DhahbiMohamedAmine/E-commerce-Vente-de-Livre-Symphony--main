@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos Livres{% endblock %}
+
+{% block body %}
+<h1>Liste des Livres</h1>
+<td><a href="{{ path('app_admin_livres_create')}}" class="btn btn-primary btn-sm">ajouter</a></td>
+<td><a href="{{ path('app_rechercher') }}" class="btn btn-success btn-sm">chercher</a></td>
+<table class="table">
+    <tr>
+        <th>Titre</th>
+        <th>ISBN</th>
+        <th>Editeur</th>
+        <th>Auteur</th>
+        <th>Date Edition</th>
+        <th>Prix</th>
+        <th>catégorie</th>
+        <th colspan="4">Action</th>
+    </tr>
+    {% for livre in livres %}
+        <tr>
+            <td>{{livre.titre}}</td>
+            <td>{{livre.ISBN}}</td>
+            <td>{{livre.editeur}}</td>
+            <td>{{livre.auteur}}</td>
+            <td>{{livre.dateEdition | date('d-m-y')}}</td>
+            <td>{{livre.prix}}</td>
+            <td>{{livre.Categorie.libelle}}</td>
+            <td><a href="{{ path('app_admin_livres_show', {'id': livre.id}) }}" class="btn btn-primary btn-sm">Voir plus ....</a></td>
+            <td>
+            <form action="{{ path('app_admin_livres_delete', {'id': livre.id}) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce Livre?');">
+                <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                </form>
+            </td>
+            <td><a href="{{ path('app_admin_livres_update', {'id': livre.id}) }}" class="btn btn-success btn-sm">Editer</a></td>
+            <td><a href="{{ path('panier_add', {'id': livre.id}) }}" class="btn btn-info btn-sm">Ajouter</a></td>
+        </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

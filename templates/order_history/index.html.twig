@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <h1>Order History</h1>
+
+  <ul>
+    {% for order in orders %}
+      <li>
+        {{ order.reference }} ({{ order.createdAt|date('Y-m-d H:i:s') }})
+        <ul>
+          {% for orderDetail in orderDetails[order.id] %}
+            <li>
+              {{ orderDetail.livres.titre }} ({{ orderDetail.quantity }} x {{ orderDetail.price }})
+            </li>
+          {% endfor %}
+        </ul>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

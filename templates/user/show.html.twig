@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos catégories
+{% endblock %}
+
+{% block body %}
+	<h1>Détail du user
+		{{user.email}}</h1>
+        {% for role in user.roles %}
+    <h4>role:{{ role }}</h4>
+{% endfor %}
+        <h4>vérifier:{{user.isVerified}}</h4>
+
+{% endblock %}
