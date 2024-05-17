@@ -1,30 +1,31 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Historique des commandes{% endblock %}
+
 {% block body %}
-<div class="container">
-    <h1 class="mt-4 mb-4 text-center">Historique des commandes</h1>
+<div class="container mt-5">
+    <h1 class="mb-4 text-center text-primary">Historique des commandes</h1>
 
     <div class="row justify-content-center">
         <div class="col-md-8">
             <ul class="list-group">
                 {% for order in orders %}
-                <li class="list-group-item mb-4 shadow-sm">
+                <li class="list-group-item mb-4 shadow-sm border-success">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h5 class="mb-0">Commande {{ order.reference }}</h5>
-                            <small class="text-muted">Date de commande: {{ order.createdAt|date('Y-m-d H:i:s') }}</small>
+                            <h5 class="mb-0 text-success">Commande {{ order.reference }}</h5>
+                            <small class="text-muted">Date de commande: {{ order.createdAt|date('d-m-Y H:i:s') }}</small>
                         </div>
-
                     </div>
                     <ul class="list-group mt-2">
                         {% for orderDetail in orderDetails[order.id] %}
-                        <li class="list-group-item">
+                        <li class="list-group-item list-group-item-light">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <h6 class="mb-0">{{ orderDetail.livres.titre }}</h6>
+                                    <h6 class="mb-0 text-dark">{{ orderDetail.livres.titre }}</h6>
                                     <small class="text-muted">{{ orderDetail.quantity }} x {{ orderDetail.price }} TND</small>
                                 </div>
-                                <span>{{ orderDetail.quantity * orderDetail.price }} TND</span>
+                                <span class="font-weight-bold">{{ orderDetail.quantity * orderDetail.price }} TND</span>
                             </div>
                         </li>
                         {% endfor %}

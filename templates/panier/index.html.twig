@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Votre Panier{% endblock %}
+
 {% block body %}
     <main class="container">
         <section class="row">
@@ -49,7 +51,7 @@
                     </table>
                 </div>
                 <div class="text-center">
-                    <a href="{{ path('panier_app_cart_checkout', {totals:total} )}}" class="btn btn-primary btn-lg">Valider le panier</a>
+                    <a href="{{ path('app_orders_add', {totals:total}) }}" class="btn btn-primary btn-lg">Valider le panier</a>
                     <a href="{{ path('app_orders_history_index') }}" class="btn btn-success btn-lg">Historique</a>
                 </div>
             </div>

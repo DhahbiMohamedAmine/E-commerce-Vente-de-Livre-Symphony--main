@@ -21,25 +21,36 @@ class CommandeController extends AbstractController
 
         $panier = $session->get('panier', []);
 
-        if($panier === []){
+        if ($panier === []) {
             $this->addFlash('message', 'Votre panier est vide');
             return $this->redirectToRoute('panier_index');
         }
 
-        
+        $totals = 0; 
+
         $order = new Order;
         $order->setUserId($this->getUser());
         $order->setReference(uniqid());
-        foreach($panier as $item => $quantity){
+        foreach ($panier as $item => $quantity) {
             $orderDetails = new OrderDetails();
             $product = $livreRepository->find($item);
-            
-            $price = $product->getPrix();
-            $orderDetails->setLivres($product);
-            $orderDetails->setPrice($price);
-            $orderDetails->setQuantity($quantity);
 
-            $order->addOrdersDetail($orderDetails);
+            if ($product) {
+                $price = $product->getPrix();
+            
+                if ($product->getQte() >= $quantity) {
+                    $totals += $price * $quantity; 
+                    $orderDetails->setLivres($product);
+                    $orderDetails->setPrice($price);
+                    $orderDetails->setQuantity($quantity);
+                    $product->setQte($product->getQte() - $quantity);
+
+                    $order->addOrdersDetail($orderDetails);
+                } else {
+                    $this->addFlash('error', 'La quantité de ' . $product->getTitre() . ' est insuffisante.');
+                    return $this->redirectToRoute('panier_index');
+                }
+            }
         }
         $em->persist($order);
         $em->flush();
@@ -47,6 +58,9 @@ class CommandeController extends AbstractController
         $session->remove('panier');
 
         $this->addFlash('message', 'Commande créée avec succès');
-        return $this->redirectToRoute('panier_index');
+        
+        // Redirect to checkout route with total as parameter
+        return $this->redirectToRoute('panier_app_cart_checkout', ['totals' => $totals]);
     }
+
 }
