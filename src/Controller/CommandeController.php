@@ -26,31 +26,21 @@ class CommandeController extends AbstractController
             return $this->redirectToRoute('panier_index');
         }
 
-        //Le panier n'est pas vide, on crée la commande
+        
         $order = new Order;
-
-        // On remplit la commande
         $order->setUserId($this->getUser());
         $order->setReference(uniqid());
-
-        // On parcourt le panier pour créer les détails de commande
         foreach($panier as $item => $quantity){
             $orderDetails = new OrderDetails();
-
-            // On va chercher le produit
             $product = $livreRepository->find($item);
             
             $price = $product->getPrix();
-
-            // On crée le détail de commande
             $orderDetails->setLivres($product);
             $orderDetails->setPrice($price);
             $orderDetails->setQuantity($quantity);
 
             $order->addOrdersDetail($orderDetails);
         }
-
-        // On persiste et on flush
         $em->persist($order);
         $em->flush();
 

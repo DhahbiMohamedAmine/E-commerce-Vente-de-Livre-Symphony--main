@@ -20,15 +20,24 @@
             <span class="visually-hidden">(current)</span>
           </a>
         </li>
+        {% if  is_granted('ROLE_ADMIN') %}
+        
         <li class="nav-item">
           <a class="nav-link" href="{{ path('app_admin_livres')}}">Nos Livres</a>
         </li>
+        
         <li class="nav-item">
           <a class="nav-link" href="{{ path('admin_categorie')}}">Nos Catégories</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{path('app_user')}}">Les Users</a>
         </li>
+        {% endif %}
+        {% if  is_granted('ROLE_USER') %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{path('panier_index')}}">Panier</a>
+        </li>
+        {% endif %}
       </ul>
     </div>
       <ul class="navbar-nav ml-auto">

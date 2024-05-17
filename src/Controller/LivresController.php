@@ -32,24 +32,30 @@ class LivresController extends AbstractController
     }
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/livres/create', name: 'app_admin_livres_create')]
-    public function create(EntityManagerInterface $em,Request $request): Response
-    {
-        
-        $livre=new Livres();
-        #creation d'un objet formulaire
-        $form=$this->createForm(LivreType::class,$livre);
-        #recuperation et traitement des données
-        $form->handleRequest($request);
-        if($form->isSubmitted()){
-            $em->persist($livre);
-            $em->flush();
-            return $this->redirectToRoute('app_admin_livres');
+    public function create(EntityManagerInterface $em, Request $request): Response
+{
+    $livre = new Livres();
+    $form = $this->createForm(LivreType::class, $livre);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        if ($livre->getPrix() <= 0 || $livre->getQte() <= 0) {
+            $this->addFlash('danger', 'Le prix et la quantité doivent être supérieurs ou égaux à 0.');
+            return $this->redirectToRoute('app_admin_livres_create');
         }
-        #affichage du formulaire
-        return $this->render('livres/add.html.twig', [
-            'f' => $form,
-        ]);
+
+        $em->persist($livre);
+        $em->flush();
+
+        $this->addFlash('success', 'Le livre a été ajouté avec succès.');
+        return $this->redirectToRoute('app_admin_livres');
     }
+
+    return $this->render('livres/add.html.twig', [
+        'f' => $form->createView(),
+    ]);
+}
+
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/livres/delete/{id}', name: 'app_admin_livres_delete')]
     public function delete(EntityManagerInterface $em,Livres $livre):Response

@@ -3,48 +3,55 @@
 {% block body %}
     <main class="container">
         <section class="row">
-            <div class="col-12">
-                <h1>Panier</h1>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Livre</th>
-                            <th>Prix</th>
-                            <th>Quantité</th>
-                            <th>Total</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for element in data %}
+            <div class="col-lg-8 mx-auto">
+                <h1 class="display-4 text-center mb-5">Votre Panier</h1>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead class="thead-dark">
                             <tr>
-                                <td>{{ element.livre.titre }}</td>
-                                <td>{{ element.livre.prix}} TND</td>
-                                <td>{{ element.qte }}</td>
-                                <td>{{ element.qte * element.livre.prix}} TND</td>
+                                <th scope="col">Livre</th>
+                                <th scope="col">Prix (TND)</th>
+                                <th scope="col">Quantité</th>
+                                <th scope="col">Total (TND)</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for element in data %}
+                                <tr>
+                                    <td>{{ element.livre.titre }}</td>
+                                    <td>{{ element.livre.prix }}</td>
+                                    <td>{{ element.qte }}</td>
+                                    <td>{{ element.qte * element.livre.prix }}</td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="{{ path('panier_add', {id: element.livre.id}) }}" class="btn btn-outline-success">+</a>
+                                            <a href="{{ path('panier_remove', {id: element.livre.id}) }}" class="btn btn-outline-warning">-</a>
+                                            <a href="{{ path('panier_delete', {id: element.livre.id}) }}" class="btn btn-outline-danger">Supprimer</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="5" class="text-center">Votre panier est vide</td>
+                                </tr>    
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3"><strong>Total</strong></td>
+                                <td>{{ total }}</td>
                                 <td>
-                                    <a href="{{ path('panier_add', {id: element.livre.id}) }}" class="btn btn-success">+</a>
-                                    <a href="{{ path('panier_remove', {id: element.livre.id}) }}" class="btn btn-warning">-</a>
-                                    <a href="{{ path('panier_delete', {id: element.livre.id}) }}" class="btn btn-danger">Supprimer</a>
+                                    <a href="{{ path('panier_empty') }}" class="btn btn-outline-danger">Vider</a>
                                 </td>
                             </tr>
-                        {% else %}
-                            <tr>
-                                <td colspan="5">Votre panier est vide</td>
-                            </tr>    
-                        {% endfor %}
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="3">Total</td>
-                            <td>{{ total}} TND</td>
-                            <td>
-                                <a href="{{ path('panier_empty') }}" class="btn btn-danger">Vider</a>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
-                <a href="{{ path('app_orders_add') }}" class="btn btn-primary">Valider le panier</a>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="text-center">
+                    <a href="{{ path('panier_app_cart_checkout', {totals:total} )}}" class="btn btn-primary btn-lg">Valider le panier</a>
+                    <a href="{{ path('app_orders_history_index') }}" class="btn btn-success btn-lg">Historique</a>
+                </div>
             </div>
         </section>
     </main>

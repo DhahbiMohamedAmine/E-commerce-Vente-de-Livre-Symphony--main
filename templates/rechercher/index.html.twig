@@ -1,39 +1,45 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Rechercher un Livre{% endblock %}
+{% block title %}Recherche de Livres{% endblock %}
 
 {% block body %}
-    <h1>Rechercher un Livre</h1>
+    <h1>Recherche de Livres</h1>
     {{ form_start(chercher) }}
-    {{ form_row(chercher.titre) }}
-    {{ form_row(chercher.auteur) }}
-    {{ form_row(chercher.categorie) }}
-    <button type="submit">Rechercher</button>
+        {{ form_row(chercher.titre) }}
+        {{ form_row(chercher.auteur) }}
+        {{ form_row(chercher.categorie) }}
+        <button type="submit" class="btn btn-primary">Rechercher</button>
     {{ form_end(chercher) }}
-    <h1>Liste des Livres</h1>
-<table class="table">
-    <tr>
-        <th>Titre</th>
-        <th>ISBN</th>
-        <th>Editeur</th>
-        <th>Auteur</th>
-        <th>Date Edition</th>
-        <th>Prix</th>
-        <th>catégorie</th>
-        <th colspan="3">Action</th>
-    </tr>
-    {% for livre in livres %}
-        <tr>
-            <td>{{ livre.titre }}</td>
-            <td>{{ livre.ISBN }}</td>
-            <td>{{ livre.editeur }}</td>
-            <td>{{ livre.auteur }}</td>
-            <td>{{ livre.dateEdition | date('d-m-y') }}</td>
-            <td>{{ livre.prix }}</td>
-            <td>{{ livre.categorie.libelle }}</td>
-            <td><a href="{{ path('app_admin_livres_show', {'id': livre.id}) }}" class="btn btn-primary btn-sm">voir détail</a></td>
-            <td><a href="{{ path('panier_add', {'id': livre.id}) }}" class="btn btn-success btn-sm">ajouter au panier</a></td>
-        </tr>
-    {% endfor %}
-</table>
+
+    <h2>Liste des Livres</h2>
+    <style>
+    .custom-img-size {
+        width: 100%; /* Pour que l'image occupe toute la largeur de son conteneur */
+        height: 400px; /* Hauteur fixe pour toutes les images */
+        object-fit: cover; /* Pour conserver le ratio d'aspect et éviter la distorsion */
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        {% for livre in livres %}
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <img class="card-img-top custom-img-size" src="{{ livre.image }}" alt="{{ livre.titre }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ livre.titre }}</h5>
+                    <p class="card-text">{{ livre.resume }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <a class="btn btn-sm btn-outline-secondary m-1" href="{{ path('app_admin_livres_show', {'id': livre.id}) }}">Voir</a>
+                            <a class="btn btn-sm btn-primary m-1" href="{{ path('panier_add', {'id': livre.id}) }}">Ajouter au panier</a>
+                        </div>
+                        <small class="text-muted">{{ livre.prix }}DT</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
