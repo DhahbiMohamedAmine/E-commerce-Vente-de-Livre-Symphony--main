@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard!{% endblock %}
+
+{% block body %}
+<div id="chart_div" style="width: 900px; height: 500px;"></div>
+<div id="chart_div1" style="width: 900px; height: 500px;"></div>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+    google.charts.load('current', {packages: ['corechart', 'bar']});
+    google.charts.setOnLoadCallback(drawCharts);
+
+    function drawCharts() {
+        drawBasic();
+        drawBasic1();
+    }
+
+    function drawBasic() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Titre');
+        data.addColumn('number', 'Quantité Vendu');
+
+        {% for o in orders %}
+        data.addRow(['{{ o.titre }}', {{ o.quantity }}]);
+        {% endfor %}
+
+        var options = {
+            title: 'Quantité de livres Vendu',
+            hAxis: {
+                title: 'Titres Des Livres',
+            },
+            vAxis: {
+                title: 'Quantité'
+            }
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+    }
+
+    function drawBasic1() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Email');
+        data.addColumn('number', 'Commandes');
+
+        {% for o in nbOrders %}
+        data.addRow(['{{ o.email }}', {{ o.orders }}]);
+        {% endfor %}
+
+        var options = {
+            title: 'Nombre de Commandes par Utilisateur',
+            hAxis: {
+                title: 'Utilisateurs',
+            },
+            vAxis: {
+                title: 'Commandes'
+            }
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div1'));
+        chart.draw(data, options);
+    }
+</script>
+{% endblock %}

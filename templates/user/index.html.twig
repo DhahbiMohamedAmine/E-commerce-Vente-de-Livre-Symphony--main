@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CategorieController!{% endblock %}
+{% block title %}Users!{% endblock %}
 
 {% block body %}
     <h1>Liste des utilisateurs</h1>
@@ -19,14 +19,14 @@
                     {{ role }}
                 {% endfor %}
             </td>
-            <td>{{ user.isVerified }}</td>
-            <td><a href="{{ path('app_user_show', {'id': user.id}) }}" class="btn btn-primary btn-sm">Voir plus ....</a></td>
+            <td>{{ user.isVerified ?  'Oui' : 'Non'}}</td>
+            <td><a href="{{ path('app_user_show', {'id': user.id}) }}" class="btn btn-primary btn-sm">Voir plus <span uk-icon="icon:  info"></span></a></td>
             <td>
                 <form action="{{ path('app_user_delete', {'id': user.id}) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur?');">
-                    <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                    <button type="submit" class="btn btn-danger btn-sm">Supprimer <span uk-icon="icon:  trash"></span></button>
                 </form>
             </td>
-            <td><a href="{{ path('app_user_update', {'id': user.id}) }}" class="btn btn-success btn-sm">Editer</a></td>
+            <td><a href="{{ path('app_user_update', {'id': user.id}) }}" class="btn btn-success btn-sm">Editer <span uk-icon="icon: pencil"></span></a></td>
         </tr>
     {% endfor %}
 </table>

@@ -5,51 +5,75 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
         <link rel="stylesheet" href="{{asset('bootstrap.css')}}"> {% block stylesheets %}{% endblock %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.21.0/dist/css/uikit.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.21.0/dist/js/uikit.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.21.0/dist/js/uikit-icons.min.js"></script>
     </head>
     <body>
     <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Symbook</a>
+    <a class="navbar-brand" href="{{ path('app_home')}}">Symbook</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarColor02">
       <ul class="navbar-nav me-auto">
+      {% if  is_granted('ROLE_ADMIN')== false %}
         <li class="nav-item">
-          <a class="nav-link" href="{{ path('app_home')}}">Acceuil
+          <a class="nav-link" href="{{ path('app_home')}}"> <span uk-icon="icon: home "></span>Acceuil 
             <span class="visually-hidden">(current)</span>
           </a>
         </li>
+         {% endif %}
+        {% if  is_granted('ROLE_ADMIN') %}
+        
         <li class="nav-item">
-          <a class="nav-link" href="{{ path('app_admin_livres')}}">Nos Livres</a>
+          <a class="nav-link" href="{{ path('app_admin_livres')}}"> <span uk-icon="icon:   file-text"></span>Nos Livres </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{{ path('app_dashboard')}}"> <span uk-icon="icon:  image"></span> Dashboard</a>
+        </li>
+        
+        <li class="nav-item">
+          <a class="nav-link" href="{{ path('admin_categorie')}}">Nos Catégories <span uk-icon="icon:  album"></span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ path('admin_categorie')}}">Nos Catégories</a>
+          <a class="nav-link" href="{{path('app_user')}}">Les Users <span uk-icon="icon:  users"></span></a>
         </li>
+        {% endif %}
+        {% if  is_granted('ROLE_USER') %}
         <li class="nav-item">
-          <a class="nav-link" href="{{path('app_user')}}">Les Users</a>
+          <a class="nav-link" href="{{path('panier_index')}}">Panier <span uk-icon="icon:  cart"></span></a>
         </li>
+        {% endif %}
       </ul>
     </div>
       <ul class="navbar-nav ml-auto">
       {% if app.user %}
       
         <li class="nav-item">
-          <a class="nav-link" href="{{ path('app_logout')}}">Deconnexion</a>
+          <a class="nav-link" href="{{ path('app_logout')}}" >Deconnexion <span uk-icon="icon:  sign-out"></span></a>
         </li>
         {% else %}
           
         <li class="nav-item">
-          <a class="nav-link" href="{{ path('app_register')}}">S'inscrire</a>
+          <a class="nav-link" href="{{ path('app_register')}}">S'inscrire <span uk-icon="icon:  sign-in"></span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ path('app_login')}}">Connexion</a>
+          <a class="nav-link" href="{{ path('app_login')}}">Connexion <span uk-icon="icon:  user"></a>
         </li>
         {% endif %}
       </ul>
   </div>
 </nav>
+{% for message in app.flashes('message') %}
+    <div class="alert alert-success">{{ message }}</div>
+{% endfor %}
 
+{% for message in app.flashes('error') %}
+    <div class="alert alert-danger">{{ message }}</div>
+{% endfor %}
 <div class="container mt-3">
         {% block body %}{% endblock %}
         </div>

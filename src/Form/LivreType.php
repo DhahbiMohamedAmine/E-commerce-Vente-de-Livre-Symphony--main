@@ -27,12 +27,11 @@ class LivreType extends AbstractType
             ->add('qte')
             ->add('Categorie', EntityType::class, [
                 'class' => Categorie::class,
-'choice_label' => 'id',
+'choice_label' => 'libelle',
             ])
             ->add('Enregistrer',SubmitType::class);
         ;
     }
-
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

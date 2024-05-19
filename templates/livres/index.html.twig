@@ -4,8 +4,8 @@
 
 {% block body %}
 <h1>Liste des Livres</h1>
-<td><a href="{{ path('app_admin_livres_create')}}" class="btn btn-primary btn-sm">ajouter</a></td>
-<td><a href="{{ path('app_rechercher') }}" class="btn btn-success btn-sm">chercher</a></td>
+<td><a href="{{ path('app_admin_livres_create')}}" class="btn btn-primary btn-sm">Ajouter <span uk-icon="icon: plus-circle"></span></a></td>
+<td><a href="{{ path('app_rechercher') }}" class="btn btn-success btn-sm">Chercher <span uk-icon="icon: search"></span></a></td>
 <table class="table">
     <tr>
         <th>Titre</th>
@@ -26,14 +26,13 @@
             <td>{{livre.dateEdition | date('d-m-y')}}</td>
             <td>{{livre.prix}}</td>
             <td>{{livre.Categorie.libelle}}</td>
-            <td><a href="{{ path('app_admin_livres_show', {'id': livre.id}) }}" class="btn btn-primary btn-sm">Voir plus ....</a></td>
+            <td><a href="{{ path('app_admin_livres_show', {'id': livre.id}) }}" class="btn btn-primary btn-sm">Voir plus <span uk-icon="icon: info"></span></a></td>
             <td>
             <form action="{{ path('app_admin_livres_delete', {'id': livre.id}) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce Livre?');">
-                <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                <button type="submit" class="btn btn-danger btn-sm">Supprimer <span uk-icon="icon: trash"></span></button>
                 </form>
             </td>
-            <td><a href="{{ path('app_admin_livres_update', {'id': livre.id}) }}" class="btn btn-success btn-sm">Editer</a></td>
-            <td><a href="{{ path('panier_add', {'id': livre.id}) }}" class="btn btn-info btn-sm">Ajouter</a></td>
+            <td><a href="{{ path('app_admin_livres_update', {'id': livre.id}) }}" class="btn btn-success btn-sm">Editer <span uk-icon="icon: pencil"></span></a></td>
         </tr>
     {% endfor %}
 </table>

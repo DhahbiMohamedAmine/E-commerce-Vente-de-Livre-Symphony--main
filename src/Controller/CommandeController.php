@@ -21,42 +21,46 @@ class CommandeController extends AbstractController
 
         $panier = $session->get('panier', []);
 
-        if($panier === []){
+        if ($panier === []) {
             $this->addFlash('message', 'Votre panier est vide');
             return $this->redirectToRoute('panier_index');
         }
 
-        //Le panier n'est pas vide, on crée la commande
-        $order = new Order;
+        $totals = 0; 
 
-        // On remplit la commande
+        $order = new Order;
         $order->setUserId($this->getUser());
         $order->setReference(uniqid());
-
-        // On parcourt le panier pour créer les détails de commande
-        foreach($panier as $item => $quantity){
+        foreach ($panier as $item => $quantity) {
             $orderDetails = new OrderDetails();
-
-            // On va chercher le produit
             $product = $livreRepository->find($item);
+
+            if ($product) {
+                $price = $product->getPrix();
             
-            $price = $product->getPrix();
+                if ($product->getQte() >= $quantity) {
+                    $totals += $price * $quantity; 
+                    $orderDetails->setLivres($product);
+                    $orderDetails->setPrice($price);
+                    $orderDetails->setQuantity($quantity);
+                    $product->setQte($product->getQte() - $quantity);
 
-            // On crée le détail de commande
-            $orderDetails->setLivres($product);
-            $orderDetails->setPrice($price);
-            $orderDetails->setQuantity($quantity);
-
-            $order->addOrdersDetail($orderDetails);
+                    $order->addOrdersDetail($orderDetails);
+                } else {
+                    $this->addFlash('error', 'La quantité de ' . $product->getTitre() . ' est insuffisante.');
+                    return $this->redirectToRoute('panier_index');
+                }
+            }
         }
-
-        // On persiste et on flush
         $em->persist($order);
         $em->flush();
 
         $session->remove('panier');
 
         $this->addFlash('message', 'Commande créée avec succès');
-        return $this->redirectToRoute('panier_index');
+        
+        // Redirect to checkout route with total as parameter
+        return $this->redirectToRoute('panier_app_cart_checkout', ['totals' => $totals]);
     }
+
 }

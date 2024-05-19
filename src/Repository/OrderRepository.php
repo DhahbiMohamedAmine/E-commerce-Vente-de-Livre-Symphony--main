@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Order;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -16,10 +17,25 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class OrderRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $entityManager ;
+    public function __construct(ManagerRegistry $registry,EntityManagerInterface $e)
     {
+        $this->entityManager=$e;
         parent::__construct($registry, Order::class);
     }
+
+    public function getNBOrders(): array
+{
+    $conn = $this->entityManager->getConnection();
+
+    $sql = '
+    SELECT o.user_id_id, u.email, COUNT(*) AS orders FROM `order` o JOIN `user` u ON u.id = o.user_id_id GROUP BY o.user_id_id, u.email';
+
+    $stmt = $conn->prepare($sql);
+    $resultSet = $stmt->executeQuery();
+    
+    return $resultSet->fetchAllAssociative();
+}
 
 //    /**
 //     * @return Order[] Returns an array of Order objects

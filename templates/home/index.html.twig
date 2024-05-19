@@ -3,7 +3,12 @@
 {% block title %}Hello HomeController!{% endblock %}
 {% block body %}
         
-<h1>Liste des Livres</h1>
+<form class="d-flex mb-4" role="search" action="{{ path('app_rechercher') }}" method="GET">
+    <div class="input-group">
+        <input class="form-control" type="search" name="search" placeholder="Rechercher des livres..." aria-label="Search">
+        <button class="btn btn-secondary" type="submit">Rechercher</button>
+    </div>
+</form>
     
 <style>
     .custom-img-size {
@@ -24,8 +29,8 @@
                     <p class="card-text">{{ livre.resume }}</p>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
-                            <a class="btn btn-sm btn-outline-secondary m-1" href="{{ path('app_admin_livres_show', {'id': livre.id}) }}">Voir</a>
-                            <a class="btn btn-sm btn-primary m-1" href="{{ path('panier_add', {'id': livre.id}) }}">Ajouter au panier</a>
+                            <a class="btn btn-sm btn-outline-secondary m-1" href="{{ path('app_admin_livres_show', {'id': livre.id}) }}">Voir <span uk-icon="icon:   search"></span></a>
+                            <a class="btn btn-sm btn-primary m-1" href="{{ path('panier_add', {'id': livre.id}) }}">Ajouter au panier <span uk-icon="icon:   cart"></span></a>
                         </div>
                         <small class="text-muted">{{ livre.prix }}DT</small>
                     </div>

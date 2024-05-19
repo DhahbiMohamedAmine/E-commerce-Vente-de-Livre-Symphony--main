@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-#[Route('/commandes/historique', name: 'app_orders_history')]
+#[Route('/commandes/historique', name: 'app_orders_history_')]
 class OrderHistoryController extends AbstractController
 {
     #[Route('', name: 'index')]
@@ -19,8 +19,7 @@ class OrderHistoryController extends AbstractController
         $user = $this->getUser();
         $orders = $em->getRepository(Order::class)->findBy(['user_id' => $user]);
 
-        // Fetch order details for each order separately
-        $orderDetailsByOrder = [];
+        $orderDetails = [];
         foreach ($orders as $order) {
             $orderDetails[$order->getId()] = $em->getRepository(OrderDetails::class)->findBy(['order' => $order]);
         }
