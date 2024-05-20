@@ -1,14 +1,29 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nos catégories
+{% block title %}
+    Utilisateur - Détails
 {% endblock %}
 
 {% block body %}
-	<h1>Détail du user
-		{{user.email}}</h1>
-        {% for role in user.roles %}
-    <h4>role:{{ role }}</h4>
-{% endfor %}
-        <h4>vérifier:{{user.isVerified}}</h4>
-
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h1>Détail de l'utilisateur</h1>
+                </div>
+                <div class="card-body">
+                    <h4>Email : {{ user.email }}</h4>
+                    <h4>Rôles :</h4>
+                    <ul class="list-group list-group-flush">
+                        {% for role in user.roles %}
+                            <li class="list-group-item">{{ role }}</li>
+                        {% endfor %}
+                    </ul>
+                    <h4>Vérifié : <span class="badge {{ user.isVerified ? 'badge-success' : 'badge-danger' }}">{{ user.isVerified ? 'Oui' : 'Non' }}</span></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
